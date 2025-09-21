@@ -1,6 +1,6 @@
 import React from 'react';
-import Section from './Section';
-import { GalleryItem } from '../types';
+import Section from './Section.tsx';
+import { GalleryItem } from '../types.ts';
 
 interface GalleryImageProps {
   image: GalleryItem;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { FacebookIcon, InstagramIcon, TwitchIcon, TwitterIcon } from './icons/SocialIcons';
+import { FacebookIcon, InstagramIcon, TwitchIcon, TwitterIcon } from './icons/SocialIcons.tsx';
 
 const Footer: React.FC = () => {
   return (

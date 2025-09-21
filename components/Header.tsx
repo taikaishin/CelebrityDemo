@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FacebookIcon, InstagramIcon, TwitchIcon, TwitterIcon } from './icons/SocialIcons';
+import { FacebookIcon, InstagramIcon, TwitchIcon, TwitterIcon } from './icons/SocialIcons.tsx';
 
 const Header: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);

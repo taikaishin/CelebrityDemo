@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import Section from './Section';
-import { generateProfileBio } from '../services/geminiService';
+import Section from './Section.tsx';
+import { generateProfileBio } from '../services/geminiService.ts';
 
 const ProfileSection: React.FC = () => {
   const [bio, setBio] = useState<string>('');

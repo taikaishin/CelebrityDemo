@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import Header from './components/Header';
-import Hero from './components/Hero';
-import NewsSection from './components/NewsSection';
-import ProfileSection from './components/ProfileSection';
-import KruSection from './components/KruSection';
-import GallerySection from './components/GallerySection';
-import Footer from './components/Footer';
-import Lightbox from './components/Lightbox';
-import { GalleryItem } from './types';
+import Header from './components/Header.tsx';
+import Hero from './components/Hero.tsx';
+import NewsSection from './components/NewsSection.tsx';
+import ProfileSection from './components/ProfileSection.tsx';
+import KruSection from './components/KruSection.tsx';
+import GallerySection from './components/GallerySection.tsx';
+import Footer from './components/Footer.tsx';
+import Lightbox from './components/Lightbox.tsx';
+import { GalleryItem } from './types.ts';
 
 const App: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState<GalleryItem | null>(null);

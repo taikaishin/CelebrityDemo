@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { GalleryItem } from '../types';
+import { GalleryItem } from '../types.ts';
 
 interface LightboxProps {
   image: GalleryItem;

@@ -1,8 +1,7 @@
-
 import React, { useState, useEffect, useRef } from 'react';
-import { NewsArticle } from '../types';
-import { generateNewsArticles } from '../services/geminiService';
-import Section from './Section';
+import { NewsArticle } from '../types.ts';
+import { generateNewsArticles } from '../services/geminiService.ts';
+import Section from './Section.tsx';
 
 const imageUrls = [
   'https://github.com/taikaishin/CelebrityDemo/blob/main/Celerbrity_Drama.png?raw=true',
