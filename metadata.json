@@ -1,0 +1,5 @@
+{
+  "name": "Celebrity - Official Website for upload test",
+  "description": "A clone of the official website for legendary celebrity Li Feng, showcasing their career, news, and ventures. This app uses the Gemini API to generate dynamic content.",
+  "requestFramePermissions": []
+}
