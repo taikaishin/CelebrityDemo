@@ -69,7 +69,7 @@
         try {
           const response = await ai.models.generateContent({
             model: "gemini-2.5-flash",
-            contents: "Generate 3 exciting, fictional news articles about the recent activities of a legendary celebrity named Li Feng. For each article, provide a realistic date from the last month, a catchy title, a short excerpt of about 20-30 words, and the full article content of about 2-3 paragraphs. Return the result as a JSON array.",
+            contents: "Generate 3 exciting, fictional news articles about the recent activities of a legendary celebrity named Li Feng. One article should be about her recent appearance on a popular TV show. Another should be about the release of her new book. The third can be about another recent achievement or event. For each article, provide a realistic date from the last month, a catchy title, a short excerpt of about 20-30 words, and the full article content of about 2-3 paragraphs. Return the result as a JSON array.",
             config: {
               responseMimeType: "application/json",
               responseSchema: {
