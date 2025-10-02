@@ -44,81 +44,38 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
-    <script type="importmap">
-      {
-        "imports": {
-          "@google/genai": "https://aistudiocdn.com/@google/genai@^1.20.0"
-        }
-      }
-    </script>
 </head>
 <body class="bg-brand-dark text-white font-sans">
     <div id="root"></div>
 
     <script type="module">
-      import { GoogleGenAI, Type } from "@google/genai";
-
-      // --- 1. GEMINI API SERVICE ---
-      
-      // IMPORTANT: Replace "YOUR_API_KEY" with your actual Google AI API key.
-      // The API key is required for the application to fetch dynamic content.
-      // For security reasons, it's recommended to use a key with restricted access for client-side applications.
-      const ai = new GoogleGenAI({ apiKey: "YOUR_API_KEY" });
-
-      const generateNewsArticles = async () => {
-        try {
-          const response = await ai.models.generateContent({
-            model: "gemini-2.5-flash",
-            contents: "Generate 3 exciting, fictional news articles about the recent activities of a legendary celebrity named Li Feng. One article should be about her recent appearance on a popular TV show. Another should be about the release of her new book. The third can be about another recent achievement or event. For each article, provide a realistic date from the last month, a catchy title, a short excerpt of about 20-30 words, and the full article content of about 2-3 paragraphs. Return the result as a JSON array.",
-            config: {
-              responseMimeType: "application/json",
-              responseSchema: {
-                type: Type.ARRAY,
-                items: {
-                  type: Type.OBJECT,
-                  properties: {
-                    date: { type: Type.STRING, description: "The date of the news article, e.g., 'August 5, 2024'." },
-                    title: { type: Type.STRING, description: "The catchy headline of the news article." },
-                    excerpt: { type: Type.STRING, description: "A short summary of the news article." },
-                    content: { type: Type.STRING, description: "The full content of the article, 2-3 paragraphs long." }
-                  },
-                  required: ["date", "title", "excerpt", "content"],
-                },
-              },
-            },
-          });
-          const jsonStr = response.text.trim();
-          return JSON.parse(jsonStr);
-        } catch (error) {
-          console.error("Error generating news articles:", error);
-          return [
-            { date: "Just now", title: "API Error: Could not fetch news", excerpt: "There was an issue connecting to the content generation service. Please check your API key.", content: "Please check your API key and network connection. This is fallback content." },
-            { date: "Just now", title: "Fallback Content Example 1", excerpt: "This is placeholder content shown when the AI service is unavailable.", content: "This is the full article content for the first fallback example. It provides more detail than the excerpt." },
-            { date: "Just now", title: "Fallback Content Example 2", excerpt: "This ensures the UI remains populated even when there's an API error.", content: "This is the full article content for the second fallback example, ensuring a consistent user experience during API outages." },
-          ];
-        }
-      };
-
-      const generateProfileBio = async () => {
-        try {
-          const response = await ai.models.generateContent({
-            model: "gemini-2.5-flash",
-            contents: "Write an engaging and concise biography (around 150 words) for a world-famous, widely-acclaimed celebrity named Li Feng, known for their incredible talent and charismatic personality. Highlight their major achievements.",
-          });
-          return response.text;
-        } catch (error) {
-          console.error("Error generating profile biography:", error);
-          return "Failed to load biography. Li Feng is a legendary celebrity, celebrated for their incredible talent and contributions to their field. Their career is highlighted by numerous awards and iconic moments that have captured the hearts of millions. (Fallback content)";
-        }
-      };
-
-      // --- 2. STATE MANAGEMENT ---
+      // --- 1. STATE MANAGEMENT ---
       const state = {
         selectedArticle: null,
         selectedImage: null,
+        articles: [
+            {
+                date: "August 15, 2024",
+                title: "Li Feng Captivates on 'The Late Night Hour', Reveals Behind-the-Scenes Secrets",
+                excerpt: "In a rare and candid interview, Li Feng joined 'The Late Night Hour' couch, sharing insights into her creative process and what's next for her.",
+                content: "Last night, audiences were treated to an unforgettable appearance by Li Feng on 'The Late Night Hour'. Looking radiant, she discussed the challenges and triumphs of her latest role in the hit series 'Crimson Echo', revealing that she performed many of her own stunts.\n\nThe conversation also touched upon her philanthropic work, with Li Feng passionately speaking about her foundation's latest initiative to support young artists. Her wit and charm were on full display, making for one of the show's most memorable episodes this season."
+            },
+            {
+                date: "August 8, 2024",
+                title: "Li Feng's Memoir 'The Path of Petals' Launches to Critical Acclaim",
+                excerpt: "Li Feng's much-anticipated memoir, 'The Path of Petals', has officially hit bookshelves, offering an intimate look into her extraordinary life and career.",
+                content: "'The Path of Petals' is more than just a memoir; it's a profound reflection on resilience, art, and identity. In the book, Li Feng chronicles her journey from a small-town dreamer to an international icon, sharing personal stories and lessons learned along the way with unflinching honesty.\n\nEarly reviews are overwhelmingly positive, with critics praising its lyrical prose and raw emotional depth. The book has already soared to the top of bestseller lists, with fans and new readers alike eager to discover the story behind the star."
+            },
+            {
+                date: "August 1, 2024",
+                title: "A New Venture: Li Feng Announces Luxury Lifestyle Brand 'Aura'",
+                excerpt: "Expanding her creative empire, Li Feng has announced the launch of 'Aura', a sustainable and ethically-sourced lifestyle brand set to debut this fall.",
+                content: "Always one to push boundaries, Li Feng is venturing into the world of entrepreneurship with the launch of her new brand, 'Aura'. The brand will feature a curated collection of home goods, apparel, and wellness products, all designed with sustainability in mind.\n\n'Aura is about finding beauty in simplicity and living intentionally,' Li Feng stated in the official press release. 'I wanted to create something that reflects my personal values and brings a sense of peace and elegance into people's homes.' The first collection is scheduled to drop in October."
+            }
+        ],
       };
 
-      // --- 3. DATA & CONSTANTS ---
+      // --- 2. DATA & CONSTANTS ---
       const newsImageUrls = [
         'https://github.com/taikaishin/CelebrityDemo/blob/main/Celerbrity_Drama.png?raw=true',
         'https://github.com/taikaishin/CelebrityDemo/blob/main/Celebruty_Interview.png?raw=true',
@@ -136,7 +93,10 @@
         { src: 'https://github.com/taikaishin/CelebrityDemo/blob/main/Celerbrity_Album.png?raw=true', story: "Behind the scenes during the recording of 'Neon Heart.'" }
       ];
 
-      // --- 4. UI COMPONENTS (HTML TEMPLATE FUNCTIONS) ---
+      const profileBioText = "Li Feng is a world-renowned actress and cultural icon, celebrated for her chameleon-like ability to inhabit any role she undertakes. With a career spanning over two decades, she has garnered critical acclaim and numerous accolades, including the prestigious Golden Scepter Award for her powerful performance in 'The Last Empress'.\n\nBeyond her on-screen presence, Li Feng is a dedicated philanthropist, a bestselling author, and a Goodwill Ambassador for the arts. Her work continues to inspire millions globally, cementing her legacy not just as a performer, but as a true artist and visionary. Her charisma and dedication to her craft have made her one of the most respected figures in modern entertainment.";
+
+
+      // --- 3. UI COMPONENTS (HTML TEMPLATE FUNCTIONS) ---
 
       const SocialIcons = ({ size = 20 }) => `
         <a href="https://www.twitch.tv/" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition-colors"><svg height="${size}" width="${size}" viewBox="0 0 24 24" fill="currentColor"><path d="M11.571 4.714h1.715v5.143H11.57zm4.714 0h1.714v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0H6zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714v9.429z" /></svg></a>
@@ -252,7 +212,7 @@
           </div>
         </footer>`;
       
-      // --- 5. RENDER & UPDATE FUNCTIONS ---
+      // --- 4. RENDER & UPDATE FUNCTIONS ---
 
       const renderApp = () => {
         const root = document.getElementById('root');
@@ -282,7 +242,7 @@
           <div id="lightbox-container"></div>
         `;
         addEventListeners();
-        loadDynamicContent();
+        loadStaticContent();
       };
 
       const renderNews = (articles) => {
@@ -332,7 +292,7 @@
         }
       };
 
-      // --- 6. EVENT HANDLERS & LOGIC ---
+      // --- 5. EVENT HANDLERS & LOGIC ---
 
       const handleNavClick = (e) => {
         e.preventDefault();
@@ -411,20 +371,23 @@
         });
       };
       
-      const loadDynamicContent = async () => {
+      const loadStaticContent = () => {
         // Load News
-        document.getElementById('news-grid').innerHTML = NewsLoadingSkeleton();
-        const articles = await generateNewsArticles();
-        state.articles = articles; // store for later access
-        renderNews(articles);
+        const newsGrid = document.getElementById('news-grid');
+        newsGrid.innerHTML = NewsLoadingSkeleton();
+        setTimeout(() => {
+          renderNews(state.articles);
+        }, 500);
 
         // Load Profile Bio
-        document.getElementById('profile-bio').innerHTML = ProfileLoadingSkeleton();
-        const bio = await generateProfileBio();
-        renderBio(bio);
+        const profileBio = document.getElementById('profile-bio');
+        profileBio.innerHTML = ProfileLoadingSkeleton();
+        setTimeout(() => {
+            renderBio(profileBioText);
+        }, 500);
       };
       
-      // --- 7. INITIALIZATION ---
+      // --- 6. INITIALIZATION ---
       document.addEventListener('DOMContentLoaded', renderApp);
 
     </script>
